@@ -35,19 +35,17 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
 
 
     <header id="header">
-
-
+        <?php // Header is empty, no changes needed here unless a common header bar is desired later ?>
     </header>
 
 
-
-    <main id="main " class="" role="main" style="background-color: #172b4d !important; height:100vh; ">
-        <div class="container">
+    <main id="main" class="flex-fill" role="main" style="background-color: #172b4d !important;"> <?php // Corrected ID, added flex-fill, removed height:100vh ?>
+        <div class="container py-3"> <?php // Added py-3 for some vertical padding ?>
             <?= $content ?>
         </div>
 
         <?php $this->beginContent('@app/views/layouts/footer/auth.footer.php'); ?>
-        <?= $content ?>
+        <?php // Removed the redundant <?= $content ?> from here ?>
         <?php $this->endContent() ?>
 
     </main>

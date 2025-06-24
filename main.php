@@ -57,23 +57,38 @@ $title = "NDU-Kenya Online Application Portal";
     <?php $this->beginBody() ?>
 
 
-    <div class="w-100">
+    <div class="w-100"> <?php // This div might be redundant if body is already d-flex flex-column ?>
         <header id="header">
-
+            <?php // It's common to put the main navigation/navbar in the header tag ?>
+            <div class="navbar border-bottom"> <?php // Added border-bottom for visual separation ?>
+                <div class="container-fluid d-flex flex-wrap justify-content-between align-items-center py-2"> <?php // Added container-fluid and flex properties ?>
+                    <div class="logo-section d-flex align-items-center"> <?php // d-flex for logo and text alignment ?>
+                        <a href="<?php echo Yii::getAlias('@web'); ?>"><img class="logo-image img-fluid" src="<?= Yii::getAlias('@web'); ?>/img/ndu-eng-logo.png" alt="NDU-Kenya Logo" style="max-height: 50px;"></a> <?php // Corrected to img-fluid and added max-height example ?>
+                        <div class="flag-line mx-2"></div> <?php // Added margin for spacing ?>
+                        <div class="logo-text-container">
+                            <div class="logo-text fw-bold">NATIONAL DEFENCE UNIVERSITY-KENYA</div> <?php // Added fw-bold for emphasis ?>
+                            <div class="tagline small text-muted">Wisdom. Excellence. Service</div> <?php // Added small and text-muted for style ?>
+                        </div>
+                    </div>
+                    <div class="flag-container">
+                        <div class="flag" style="margin-right: 0 !important;"> <?php // This custom flag styling might need responsive adjustments via CSS ?>
+                            <div class="red"></div>
+                            <div class="light-blue"></div>
+                            <div class="dark-blue"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </header>
 
         <?php
         if (Yii::$app->session->hasFlash('title')) {
             // echo Helper::growl(Yii::$app->session->hasFlash('title'), Yii::$app->session->getFlash('body'));
         }
-
-
         ?>
 
         <?php if (Yii::$app->session->hasFlash('success')): ?>
-
             <?php
-
             echo Growl::widget([
                 'type' => Growl::TYPE_SUCCESS,
                 'title' => 'Well done!',
@@ -109,47 +124,19 @@ $title = "NDU-Kenya Online Application Portal";
                 ]
             ]);
             ?>
-
         <?php endif; ?>
-        <main id="main" role="main">
 
-            <div class="vh-100" style="width:100%; overflow-x: hidden; ">
-                <div class="navbar">
-                    <div class="navbar-content">
-                        <div class="logo-section">
-                            <a href="<?php echo Yii::getAlias('@web'); ?>"><img class="logo-image im-fluid" src="<?= Yii::getAlias('@web'); ?>/img/ndu-eng-logo.png" alt="NDU-Kenya Logo"></a>
-                            <div class="flag-line"></div>
-                            <div class="logo-text-container">
-                                <div class="logo-text">NATIONAL DEFENCE UNIVERSITY-KENYA</div>
-                                <div class="tagline">Wisdom. Excellence. Service</div>
-                            </div>
-                        </div>
-                        <div class="flag-container">
-                            <div class="flag" style="margin-right: 0 !important;">
-                                <div class="red"></div>
-                                <div class="light-blue"></div>
-                                <div class="dark-blue"></div>
-                            </div>
-                        </div>
-                    </div>
+        <main id="main" role="main" class="flex-fill"> <?php // Added flex-fill to allow main to grow ?>
+            <div style="width:100%; overflow-x: hidden;"> <?php // Removed vh-100 ?>
+                <div class="container-fluid my-3"> <?php // Wrapped content in container-fluid with vertical margin ?>
+                    <?= $content ?>
                 </div>
-                <?= $content ?>
-
-
-
             </div>
-
-
-
         </main>
-
-
-
-
 
     </div>
 
-    <footer class="mt-auto py-3 bg-light">
+    <footer class="mt-auto py-3 bg-light border-top"> <?php // Added border-top for visual separation ?>
         <div class="container">
             <div class="row">
                 <div class="col-12">
