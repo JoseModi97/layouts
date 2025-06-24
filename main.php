@@ -54,38 +54,52 @@ $title = "NDU-Kenya Online Application Portal";
         body {
              /* padding-top: 56px; /* Adjust if header becomes fixed */
         }
-        .sidebar {
-            padding: 0; /* Remove top padding, rely on sidebar-sticky's padding */
-            box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
-            /* The .collapse class will handle display:none initially on < md */
-            /* On md+ screens, d-md-block makes it visible. */
-            /* When toggled on < md, .collapse.show makes it visible. */
-            /* We might need to ensure it takes full width or a specific width then. */
+        #sidebar {
+            position: fixed;
+            top: 0; /* Will be overridden by padding-top to sit below header */
+            left: 0;
+            bottom: 0; /* Extends to bottom of viewport */
+            width: 280px; /* Consistent width for the sidebar */
+            z-index: 1000;
+            background-color: #f8f9fa; /* bg-light */
+            box-shadow: 0 0 10px rgba(0,0,0,0.1); /* Softer shadow */
+            transform: translateX(-100%);
+            transition: transform 0.3s ease-in-out;
+            padding-top: 65px; /* Approximate header height - ADJUST IF HEADER HEIGHT CHANGES */
+            /* The Bootstrap column classes col-md-3 col-lg-2 are on #sidebar but won't dictate width due to fixed width: 280px here */
         }
 
-        /* Styles for when the sidebar is toggled open on small screens */
-        @media (max-width: 767.98px) { /* Bootstrap's md breakpoint is 768px */
-            #sidebar.collapse.show {
-                /* Example: make it take most of the screen width */
-                width: 80%;
-                position: absolute; /* Or fixed, if an overlay effect is desired */
-                z-index: 1050; /* Above other content */
-                background-color: #f8f9fa; /* Same as bg-light */
-                height: 100%; /* Fill the parent row height */
-            }
-            /* Optional: Add a backdrop when sidebar is open on small screens */
-            /* This would require JS to add/remove backdrop element or class on body */
+        #sidebar.sidebar-open {
+            transform: translateX(0);
         }
-
 
         .sidebar-sticky {
-            position: relative; /* Keep this for potential future sticky behavior if desired */
-            height: 100%; /* Fill the height of the parent .sidebar column */
-            padding-top: 1rem; /* Add some padding at the top of the scrollable area */
-            overflow-x: hidden;
+            height: 100%; /* Takes full height of the padded #sidebar */
             overflow-y: auto;
+            padding: 1rem; /* Internal padding for nav items */
         }
 
+        #main {
+            transition: margin-left 0.3s ease-in-out;
+            padding-top: 65px; /* Approximate header height + small buffer - ADJUST IF HEADER HEIGHT CHANGES */
+            margin-left: 0; /* Default when sidebar is closed */
+        }
+
+        /* --- Responsive Adjustments for Main Content --- */
+
+        /* Small screens (<768px): Sidebar overlays, main content does not shift margin */
+        @media (max-width: 767.98px) {
+            /* No change to #main margin-left needed, sidebar overlays */
+        }
+
+        /* Medium screens and up (>=768px): Sidebar pushes main content */
+        @media (min-width: 768px) {
+            body.main-content-shifted #main {
+                margin-left: 280px; /* Push main content by the width of the sidebar */
+            }
+        }
+
+        /* Original sidebar nav link styling */
         .sidebar .nav-link {
             font-weight: 500;
             color: #333;
@@ -130,7 +144,7 @@ $title = "NDU-Kenya Online Application Portal";
             <div class="navbar border-bottom"> <?php // Added border-bottom for visual separation ?>
                 <div class="container-fluid d-flex flex-wrap justify-content-center justify-content-sm-between align-items-center py-2"> <?php // Centered by default, between on sm and up ?>
 
-                    <button class="navbar-toggler d-md-none" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle navigation">
+                    <button class="navbar-toggler" type="button" id="sidebarToggleBtn" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
 
@@ -200,7 +214,7 @@ $title = "NDU-Kenya Online Application Portal";
 
         <div class="container-fluid flex-grow-1"> <!-- Added flex-grow-1 -->
             <div class="row h-100"> <!-- Added h-100 for potential full height row -->
-                <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+                <nav id="sidebar" class="col-md-3 col-lg-2 bg-light sidebar"> <!-- Removed d-md-block and collapse -->
                     <div class="sidebar-sticky pt-3"> <!-- Ensure sidebar-sticky class is used -->
                         <ul class="nav flex-column">
                             <li class="nav-item">
@@ -281,6 +295,41 @@ $title = "NDU-Kenya Online Application Portal";
 
 
     <?php $this->endBody() ?>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
+            const sidebar = document.getElementById('sidebar');
+            // Use a wrapper for main content adjustment, e.g., the body or a specific div
+            // Let's assume we'll toggle a class on the body for now.
+            const body = document.body;
+
+            if (sidebarToggleBtn && sidebar) {
+                sidebarToggleBtn.addEventListener('click', function () {
+                    sidebar.classList.toggle('sidebar-open');
+                    body.classList.toggle('main-content-shifted'); // Or sidebar-open-on-body etc.
+
+                    // Optional: Store state in localStorage to remember if sidebar was open/closed
+                    // if (sidebar.classList.contains('sidebar-open')) {
+                    //    localStorage.setItem('sidebarState', 'open');
+                    // } else {
+                    //    localStorage.setItem('sidebarState', 'closed');
+                    // }
+                });
+
+                // Optional: Check localStorage on page load to restore sidebar state
+                // const savedSidebarState = localStorage.getItem('sidebarState');
+                // if (savedSidebarState === 'open') {
+                //    sidebar.classList.add('sidebar-open');
+                //    body.classList.add('main-content-shifted');
+                // } else {
+                //    // Default to closed or whatever initial state is desired
+                //    sidebar.classList.remove('sidebar-open');
+                //    body.classList.remove('main-content-shifted');
+                // }
+            }
+        });
+    </script>
 </body>
 
 </html>
