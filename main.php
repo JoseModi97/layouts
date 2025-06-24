@@ -55,22 +55,35 @@ $title = "NDU-Kenya Online Application Portal";
              /* padding-top: 56px; /* Adjust if header becomes fixed */
         }
         .sidebar {
-            position: fixed;
-            top: 0; /* Aligns with top of viewport */
-            bottom: 0;
-            left: 0;
-            z-index: 100; /* Behind the navbar */
-            padding: 70px 0 0; /* Approximate height of the header + some buffer */
+            padding: 0; /* Remove top padding, rely on sidebar-sticky's padding */
             box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+            /* The .collapse class will handle display:none initially on < md */
+            /* On md+ screens, d-md-block makes it visible. */
+            /* When toggled on < md, .collapse.show makes it visible. */
+            /* We might need to ensure it takes full width or a specific width then. */
         }
 
+        /* Styles for when the sidebar is toggled open on small screens */
+        @media (max-width: 767.98px) { /* Bootstrap's md breakpoint is 768px */
+            #sidebar.collapse.show {
+                /* Example: make it take most of the screen width */
+                width: 80%;
+                position: absolute; /* Or fixed, if an overlay effect is desired */
+                z-index: 1050; /* Above other content */
+                background-color: #f8f9fa; /* Same as bg-light */
+                height: 100%; /* Fill the parent row height */
+            }
+            /* Optional: Add a backdrop when sidebar is open on small screens */
+            /* This would require JS to add/remove backdrop element or class on body */
+        }
+
+
         .sidebar-sticky {
-            position: relative; /* Changed from sticky for this fixed sidebar context */
-            top: 0;
-            height: calc(100vh - 70px); /* Adjust based on actual header height */
-            padding-top: .5rem;
+            position: relative; /* Keep this for potential future sticky behavior if desired */
+            height: 100%; /* Fill the height of the parent .sidebar column */
+            padding-top: 1rem; /* Add some padding at the top of the scrollable area */
             overflow-x: hidden;
-            overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+            overflow-y: auto;
         }
 
         .sidebar .nav-link {
@@ -116,6 +129,11 @@ $title = "NDU-Kenya Online Application Portal";
             <?php // It's common to put the main navigation/navbar in the header tag ?>
             <div class="navbar border-bottom"> <?php // Added border-bottom for visual separation ?>
                 <div class="container-fluid d-flex flex-wrap justify-content-center justify-content-sm-between align-items-center py-2"> <?php // Centered by default, between on sm and up ?>
+
+                    <button class="navbar-toggler d-md-none" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
                     <div class="logo-section d-flex flex-column flex-sm-row align-items-center text-center text-sm-start mb-2 mb-sm-0"> <?php // Flex column on XS, row on SM+, text center on XS ?>
                         <a href="<?php echo Yii::getAlias('@web'); ?>" class="mb-2 mb-sm-0"><img class="logo-image img-fluid" src="<?= Yii::getAlias('@web'); ?>/img/ndu-eng-logo.png" alt="NDU-Kenya Logo"></a> <?php // Corrected to img-fluid, removed max-height style, added margin bottom on XS ?>
                         <div class="flag-line mx-0 mx-sm-2 my-1 my-sm-0"></div> <?php // Adjusted margins for XS ?>
@@ -180,10 +198,10 @@ $title = "NDU-Kenya Online Application Portal";
             ?>
         <?php endif; ?>
 
-        <div class="container-fluid">
-            <div class="row">
+        <div class="container-fluid flex-grow-1"> <!-- Added flex-grow-1 -->
+            <div class="row h-100"> <!-- Added h-100 for potential full height row -->
                 <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
-                    <div class="position-sticky pt-3">
+                    <div class="sidebar-sticky pt-3"> <!-- Ensure sidebar-sticky class is used -->
                         <ul class="nav flex-column">
                             <li class="nav-item">
                                 <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
@@ -237,7 +255,7 @@ $title = "NDU-Kenya Online Application Portal";
                     </div>
                 </nav>
 
-                <main id="main" role="main" class="col-md-9 ms-sm-auto col-lg-10 px-md-4 flex-fill" style="padding-top: 70px;"> <?php // Added padding-top to prevent content overlap with a potentially fixed header ?>
+                <main id="main" role="main" class="col-md-9 ms-sm-auto col-lg-10 px-md-4 flex-fill"> <?php // Added flex-fill to allow main to grow ?>
                     <div style="width:100%; overflow-x: hidden;"> <?php // Removed vh-100 ?>
                         <div class="container-fluid my-3"> <?php // Wrapped content in container-fluid with vertical margin ?>
                             <?= $content ?>
