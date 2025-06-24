@@ -49,7 +49,61 @@ $title = "NDU-Kenya Online Application Portal";
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.2.0/css/all.min.css" integrity="sha512-6c4nX2tn5KbzeBJo9Ywpa0Gkt+mzCzJBrE1RB6fmpcsoN+b/w/euwIMuQKNyUoU/nToKN3a8SgNOtPrbW12fug==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.6.347/pdf.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Ensure body padding accommodates fixed header if it were fixed-top */
+        body {
+             /* padding-top: 56px; /* Adjust if header becomes fixed */
+        }
+        .sidebar {
+            position: fixed;
+            top: 0; /* Aligns with top of viewport */
+            bottom: 0;
+            left: 0;
+            z-index: 100; /* Behind the navbar */
+            padding: 70px 0 0; /* Approximate height of the header + some buffer */
+            box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+        }
 
+        .sidebar-sticky {
+            position: relative; /* Changed from sticky for this fixed sidebar context */
+            top: 0;
+            height: calc(100vh - 70px); /* Adjust based on actual header height */
+            padding-top: .5rem;
+            overflow-x: hidden;
+            overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+        }
+
+        .sidebar .nav-link {
+            font-weight: 500;
+            color: #333;
+        }
+
+        .sidebar .nav-link .feather {
+            margin-right: 4px;
+            color: #727272;
+        }
+
+        .sidebar .nav-link.active {
+            color: #007bff;
+        }
+
+        .sidebar .nav-link:hover .feather,
+        .sidebar .nav-link.active .feather {
+            color: inherit;
+        }
+
+        .sidebar-heading {
+            font-size: .75rem;
+            text-transform: uppercase;
+        }
+        .logout.btn-link {
+            color: #333;
+            text-decoration: none;
+        }
+        .logout.btn-link:hover {
+            color: #007bff;
+        }
+    </style>
 </head>
 
 
@@ -126,13 +180,72 @@ $title = "NDU-Kenya Online Application Portal";
             ?>
         <?php endif; ?>
 
-        <main id="main" role="main" class="flex-fill"> <?php // Added flex-fill to allow main to grow ?>
-            <div style="width:100%; overflow-x: hidden;"> <?php // Removed vh-100 ?>
-                <div class="container-fluid my-3"> <?php // Wrapped content in container-fluid with vertical margin ?>
-                    <?= $content ?>
-                </div>
+        <div class="container-fluid">
+            <div class="row">
+                <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+                    <div class="position-sticky pt-3">
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                                    <span>Section 1</span>
+                                </h6>
+                                <a class="nav-link" href="#">
+                                    <span data-feather="home"></span>
+                                    Link 1
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">
+                                    <span data-feather="file"></span>
+                                    Link 2
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                                    <span>Section 2</span>
+                                </h6>
+                                <a class="nav-link" href="#">
+                                    <span data-feather="shopping-cart"></span>
+                                    Link 3
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">
+                                    <span data-feather="users"></span>
+                                    Link 4
+                                </a>
+                            </li>
+                        </ul>
+
+                        <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                            <span>User</span>
+                        </h6>
+                        <ul class="nav flex-column mb-2">
+                            <li class="nav-item">
+                                <?php
+                                if (!Yii::$app->user->isGuest) {
+                                    echo Html::beginForm(['/site/logout'], 'post', ['class' => 'd-flex'])
+                                        . Html::submitButton(
+                                            'Logout (' . Yii::$app->user->identity->username . ')',
+                                            ['class' => 'nav-link btn btn-link logout']
+                                        )
+                                        . Html::endForm();
+                                }
+                                ?>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+
+                <main id="main" role="main" class="col-md-9 ms-sm-auto col-lg-10 px-md-4 flex-fill" style="padding-top: 70px;"> <?php // Added padding-top to prevent content overlap with a potentially fixed header ?>
+                    <div style="width:100%; overflow-x: hidden;"> <?php // Removed vh-100 ?>
+                        <div class="container-fluid my-3"> <?php // Wrapped content in container-fluid with vertical margin ?>
+                            <?= $content ?>
+                        </div>
+                    </div>
+                </main>
             </div>
-        </main>
+        </div>
 
     </div>
 
