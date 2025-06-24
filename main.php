@@ -63,7 +63,7 @@ $title = "NDU-Kenya Online Application Portal";
             <div class="navbar border-bottom"> <?php // Added border-bottom for visual separation ?>
                 <div class="container-fluid d-flex flex-wrap justify-content-between align-items-center py-2"> <?php // Added container-fluid and flex properties ?>
                     <div class="logo-section d-flex align-items-center"> <?php // d-flex for logo and text alignment ?>
-                        <a href="<?php echo Yii::getAlias('@web'); ?>"><img class="logo-image img-fluid" src="<?= Yii::getAlias('@web'); ?>/img/ndu-eng-logo.png" alt="NDU-Kenya Logo" style="max-height: 50px;"></a> <?php // Corrected to img-fluid and added max-height example ?>
+                        <a href="<?php echo Yii::getAlias('@web'); ?>"><img class="logo-image img-fluid" src="<?= Yii::getAlias('@web'); ?>/img/ndu-eng-logo.png" alt="NDU-Kenya Logo"></a> <?php // Corrected to img-fluid, removed max-height style ?>
                         <div class="flag-line mx-2"></div> <?php // Added margin for spacing ?>
                         <div class="logo-text-container">
                             <div class="logo-text fw-bold">NATIONAL DEFENCE UNIVERSITY-KENYA</div> <?php // Added fw-bold for emphasis ?>
