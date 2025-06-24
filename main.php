@@ -61,16 +61,16 @@ $title = "NDU-Kenya Online Application Portal";
         <header id="header">
             <?php // It's common to put the main navigation/navbar in the header tag ?>
             <div class="navbar border-bottom"> <?php // Added border-bottom for visual separation ?>
-                <div class="container-fluid d-flex flex-wrap justify-content-between align-items-center py-2"> <?php // Added container-fluid and flex properties ?>
-                    <div class="logo-section d-flex align-items-center"> <?php // d-flex for logo and text alignment ?>
-                        <a href="<?php echo Yii::getAlias('@web'); ?>"><img class="logo-image img-fluid" src="<?= Yii::getAlias('@web'); ?>/img/ndu-eng-logo.png" alt="NDU-Kenya Logo"></a> <?php // Corrected to img-fluid, removed max-height style ?>
-                        <div class="flag-line mx-2"></div> <?php // Added margin for spacing ?>
+                <div class="container-fluid d-flex flex-wrap justify-content-center justify-content-sm-between align-items-center py-2"> <?php // Centered by default, between on sm and up ?>
+                    <div class="logo-section d-flex flex-column flex-sm-row align-items-center text-center text-sm-start mb-2 mb-sm-0"> <?php // Flex column on XS, row on SM+, text center on XS ?>
+                        <a href="<?php echo Yii::getAlias('@web'); ?>" class="mb-2 mb-sm-0"><img class="logo-image img-fluid" src="<?= Yii::getAlias('@web'); ?>/img/ndu-eng-logo.png" alt="NDU-Kenya Logo"></a> <?php // Corrected to img-fluid, removed max-height style, added margin bottom on XS ?>
+                        <div class="flag-line mx-0 mx-sm-2 my-1 my-sm-0"></div> <?php // Adjusted margins for XS ?>
                         <div class="logo-text-container">
                             <div class="logo-text fw-bold">NATIONAL DEFENCE UNIVERSITY-KENYA</div> <?php // Added fw-bold for emphasis ?>
                             <div class="tagline small text-muted">Wisdom. Excellence. Service</div> <?php // Added small and text-muted for style ?>
                         </div>
                     </div>
-                    <div class="flag-container">
+                    <div class="flag-container"> <?php // This container might also need to be centered if it's the only item on a line on XS ?>
                         <div class="flag" style="margin-right: 0 !important;"> <?php // This custom flag styling might need responsive adjustments via CSS ?>
                             <div class="red"></div>
                             <div class="light-blue"></div>
